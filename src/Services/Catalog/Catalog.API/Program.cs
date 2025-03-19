@@ -8,6 +8,10 @@ builder.Services.AddMediatR(config =>
     // Tells mediatR where to find our commands and queries classes
     config.RegisterServicesFromAssembly(typeof(Program).Assembly);  
 });
+builder.Services.AddMarten(options =>
+{
+    options.Connection(builder.Configuration.GetConnectionString("Database")!); 
+}).UseLightweightSessions();
 
 var app = builder.Build();
 
