@@ -1,4 +1,7 @@
-using BuildingBlocks.Behaviors;
+// CQRS (Command Query Responsibility Segregation) is an architectural pattern that separates an application's operations into two distinct categories:
+// 1.	Commands 
+// 2.   Queries 
+// This project implements CQRS using MediatR and Marten:
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,14 +20,24 @@ builder.Services.AddValidatorsFromAssembly(assembly);
 
 builder.Services.AddCarter();
 
+// Marten simplifies data access by eliminating the need for explicit ORM mappings while leveraging
+// PostgreSQL's JSON capabilities for document storage, making it well-suited for this .NET 8
+// application using a CQRS pattern with MediatR.
+
 builder.Services.AddMarten(options =>
 {
     options.Connection(builder.Configuration.GetConnectionString("Database")!); 
 }).UseLightweightSessions();
 
+// Register a custom exception handler for handling exceptions globally, from building blocks
+builder.Services.AddExceptionHandler<CustomExceptionHandler>(); 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.MapCarter();
+
+// Use the custom exception handler, options are defined in the CustomExceptionHandler class
+app.UseExceptionHandler(options => { }); 
 
 app.Run();
