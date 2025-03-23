@@ -27,13 +27,10 @@ namespace Catalog.API.Products.GetProducts
     /// </summary>
     /// <param name="session"></param>
     /// <param name="logger"></param>
-    internal class GetProductQueryHandler(IDocumentSession session, ILogger<GetProductQueryHandler> logger) 
-        : IQueryHandler<GetProductsQuery, GetProductsResult>
+    internal class GetProductQueryHandler(IDocumentSession session) : IQueryHandler<GetProductsQuery, GetProductsResult>
     {
         public async Task<GetProductsResult> Handle(GetProductsQuery query, CancellationToken cancellationToken)
-        {
-            logger.LogInformation("GetProductQueryHandler.Handle called with {@Query}", query);
-
+        {  
             // fetches all products from the database using session.Query...
             var products = await session.Query<Product>().ToListAsync(cancellationToken);
 

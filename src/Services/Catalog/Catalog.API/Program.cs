@@ -13,6 +13,7 @@ builder.Services.AddMediatR(config =>
     // Tells mediatR where to find our commands and queries classes
     config.RegisterServicesFromAssembly(assembly); 
     config.AddOpenBehavior(typeof(ValidationBehavior<,>)); // Register the validation behavior
+    config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
 // Register all the validators in the assembly, a validator is a class that implements IValidator<T>
 // scans the project for any validators and registers them with the DI container
