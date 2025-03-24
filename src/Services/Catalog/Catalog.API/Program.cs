@@ -3,6 +3,7 @@
 // 2.   Queries 
 // This project implements CQRS using MediatR and Marten:
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -29,6 +30,11 @@ builder.Services.AddMarten(options =>
 {
     options.Connection(builder.Configuration.GetConnectionString("Database")!); 
 }).UseLightweightSessions();
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.InitializeMartenWith<CatalogInitialData>(); // Seed the database with initial data
+}
 
 // Register a custom exception handler for handling exceptions globally, from building blocks
 builder.Services.AddExceptionHandler<CustomExceptionHandler>(); 

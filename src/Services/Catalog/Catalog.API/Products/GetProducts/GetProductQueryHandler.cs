@@ -1,8 +1,4 @@
 ﻿
-using Microsoft.Extensions.Logging;
-using System.ComponentModel;
-using System.Reflection.Metadata;
-
 /// This code implements a CQRS (Command Query Responsibility Segregation) pattern, specifically the query part
 namespace Catalog.API.Products.GetProducts
 {
@@ -10,7 +6,7 @@ namespace Catalog.API.Products.GetProducts
     /// A simple record that serves as a message to request products. It implements IQuery<GetProductsResult>,
     /// indicating this query returns a GetProductsResult.
     /// </summary>
-    public record GetProductsQuery() : IQuery<GetProductsResult>;
+    public record GetProductsQuery(int? PageNumber = 1, int? PageSize = 10) : IQuery<GetProductsResult>;
 
     /// <summary>
     /// A record containing the query result - a collection of Product objects.
@@ -32,7 +28,7 @@ namespace Catalog.API.Products.GetProducts
         public async Task<GetProductsResult> Handle(GetProductsQuery query, CancellationToken cancellationToken)
         {  
             // fetches all products from the database using session.Query...
-            var products = await session.Query<Product>().ToListAsync(cancellationToken);
+            var products = await session.Query<Product>().ToPagedListAsync(query.PageNumber ?? 1, query.PageSize ?? 10, cancellationToken);
 
             // packages products into the result container and returns
             return new GetProductsResult(products); 
