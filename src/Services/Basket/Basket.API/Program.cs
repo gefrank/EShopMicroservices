@@ -1,11 +1,21 @@
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var assembly = typeof(Program).Assembly;
+// Carter simplifies the building of api endpoints
+// scans the assembly for CarterModule classes and exposes minimal APIs
+builder.Services.AddCarter();
+builder.Services.AddMediatR(config =>
+{
+    config.RegisterServicesFromAssembly(assembly);
+    config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+    config.AddOpenBehavior(typeof(LoggingBehavior<,>));
+});
 
 var app = builder.Build();
 
-builder.Services.AddCarter();
-
 // Configure the HTTP request pipeline.
+app.MapCarter();
 
 app.Run();
