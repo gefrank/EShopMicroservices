@@ -22,6 +22,13 @@ builder.Services.AddMarten(options =>
 }).UseLightweightSessions();
 
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+// Note using Scrutor library to decorate the IBasketRepository with the CachedBasketRepository
+builder.Services.Decorate<IBasketRepository, CachedBasketRepository>();
+// Allows us to inject the IDistributedCache into the CachedBasketRepository
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis")!;
+});
 
 // Register a custom exception handler for handling exceptions globally, from building blocks
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
