@@ -1,0 +1,49 @@
+// A .proto file is a protocol buffer (protobuf) definition file that serves as a contract or interface definition for gRPC services. 
+
+// This declares we're using Protocol Buffers version 3 syntax
+syntax = "proto3";
+
+// Specifies the C# namespace that will be used for the generated code
+option csharp_namespace = "Discount.Grpc";
+
+// Defines the package name for organizing the protobuf messages
+package discount;
+
+// Service definition - defines the methods that can be called remotely
+service DiscountProtoService {
+	// Discount CRUD Operations
+	rpc GetDiscount (GetDiscountRequest) returns (CouponModel);
+	rpc CreateDiscount (CreateDiscountRequest) returns (CouponModel);
+	rpc UpdateDiscount (UpdateDiscountRequest) returns (CouponModel);
+	rpc DeleteDiscount (DeleteDiscountRequest) returns (DeleteDiscountResponse);
+}
+
+// Message definitions - these are like C# classes that define the data structure
+// The numbers (1,2,3,4) are field identifiers used by protobuf for serialization
+
+message GetDiscountRequest {
+	string productName = 1;
+}
+
+message CouponModel {
+	int32 id = 1;
+	string productName = 2;
+	string description = 3;
+	int32 amount = 4;
+}
+
+message CreateDiscountRequest {
+	CouponModel coupon = 1;
+}
+
+message UpdateDiscountRequest {
+	CouponModel coupon = 1;
+}
+
+message DeleteDiscountRequest {
+	string productName = 1;
+}
+
+message DeleteDiscountResponse {
+	bool success = 1;
+}

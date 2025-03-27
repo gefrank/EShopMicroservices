@@ -1,16 +1,25 @@
-﻿using Discount.Grpc.Services;
+﻿using Discount.Grpc.Data;
+using Discount.Grpc.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddGrpc();
 // Add this line to register the reflection service
-builder.Services.AddGrpcReflection();  // This line is missing in your code
+builder.Services.AddGrpcReflection();  
+builder.Services.AddDbContext<DiscountContext>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("Database"));
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.MapGrpcService<GreeterService>();
+app.UseMigration();
+
+// Accommodates incoming gRPC requests
+app.MapGrpcService<DiscountService>();
 // Now this line will work because the service is registered
 app.MapGrpcReflectionService();
 
