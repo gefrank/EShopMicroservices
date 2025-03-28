@@ -1,11 +1,14 @@
 
 using BuildingBlocks.Exceptions.Handler;
+using Discount.Grpc;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// Application Services
 var assembly = typeof(Program).Assembly;
 // Carter simplifies the building of api endpoints
 // scans the assembly for CarterModule classes and exposes minimal APIs
@@ -17,6 +20,7 @@ builder.Services.AddMediatR(config =>
     config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
 
+// Data Services
 builder.Services.AddMarten(options =>
 {
     options.Connection(builder.Configuration.GetConnectionString("Database")!);
@@ -32,6 +36,14 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration.GetConnectionString("Redis")!;
 });
 
+//gRPC Services
+builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+});
+
+
+// Cross-Cutting Services
 // Register a custom exception handler for handling exceptions globally, from building blocks
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
