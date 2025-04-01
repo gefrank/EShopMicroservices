@@ -9,7 +9,7 @@
             return services;
         }
 
-        public static WebApplication UserApiServices(this WebApplication app)
+        public static WebApplication UseApiServices(this WebApplication app)
         {
             // Uncomment if using Carter for minimal APIs
             // app.MapCarter();
