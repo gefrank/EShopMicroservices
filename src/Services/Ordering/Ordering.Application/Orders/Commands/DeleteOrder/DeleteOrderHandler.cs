@@ -1,8 +1,7 @@
 ﻿
 namespace Ordering.Application.Orders.Commands.DeleteOrder
 {
-    public class DeleteOrderHandler(IApplicationDbContext dbContext)
-        : ICommandHandler<DeleteOrderCommand, DeleteOrderResult>
+    public class DeleteOrderHandler(IApplicationDbContext dbContext) : ICommandHandler<DeleteOrderCommand, DeleteOrderResult>
     {
         public async Task<DeleteOrderResult> Handle(DeleteOrderCommand command, CancellationToken cancellationToken)
         {
@@ -11,8 +10,7 @@ namespace Ordering.Application.Orders.Commands.DeleteOrder
             //return result
 
             var orderId = OrderId.Of(command.OrderId);
-            var order = await dbContext.Orders
-                .FindAsync([orderId], cancellationToken: cancellationToken);
+            var order = await dbContext.Orders.FindAsync([orderId], cancellationToken: cancellationToken);
 
             if (order is null)
             {
