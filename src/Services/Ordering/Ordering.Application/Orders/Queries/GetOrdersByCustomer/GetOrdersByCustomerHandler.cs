@@ -1,5 +1,5 @@
 ﻿
-namespace Ordering.Application.Orders.Queries
+namespace Ordering.Application.Orders.Queries.GetOrdersByCustomer
 {
     public class GetOrdersByCustomerHandler(IApplicationDbContext dbContext)
         : IQueryHandler<GetOrdersByCustomerQuery, GetOrdersByCustomerResult>

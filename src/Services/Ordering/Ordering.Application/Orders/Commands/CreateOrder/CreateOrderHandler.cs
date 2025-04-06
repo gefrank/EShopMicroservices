@@ -1,6 +1,14 @@
 ﻿
 namespace Ordering.Application.Orders.Commands.CreateOrder
 {
+    /// <summary>
+    /// The CreateOrderHandler implements ICommandHandler<CreateOrderCommand, CreateOrderResult> and contains the logic to handle the command.
+    /// MediatR is typically registered in the dependency injection container in the Program.cs.  This registration scans the 
+    /// assembly for all classes that implement IRequestHandler<TRequest, TResponse> (or ICommandHandler<TCommand, TResult> in your case) and registers them.
+    /// 
+    /// The command handler (CreateOrderHandler) focuses on the business logic and data manipulation, returning a CreateOrderResult.
+    /// </summary>
+    /// <param name="dbContext"></param>
     public class CreateOrderHandler(IApplicationDbContext dbContext)
         : ICommandHandler<CreateOrderCommand, CreateOrderResult>
     {
