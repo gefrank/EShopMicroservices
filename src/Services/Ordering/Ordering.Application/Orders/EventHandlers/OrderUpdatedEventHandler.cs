@@ -1,7 +1,4 @@
-﻿
-using MediatR;
-
-namespace Ordering.Application.Orders.EventHandlers
+﻿namespace Ordering.Application.Orders.EventHandlers
 {
     public class OrderUpdatedEventHandler(ILogger<OrderUpdatedEventHandler> logger)
         : INotificationHandler<OrderUpdatedEvent>
