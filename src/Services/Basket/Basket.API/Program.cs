@@ -3,6 +3,7 @@ using BuildingBlocks.Exceptions.Handler;
 using Discount.Grpc;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using BuildingBlocks.Messaging.MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +53,9 @@ builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
     return handler;
 });
 
+// Async Communication Services, since this is the publisher side don't need to configure the consumers,
+// thus not passing the assembly
+builder.Services.AddMessageBroker(builder.Configuration);
 
 // Cross-Cutting Services
 // Register a custom exception handler for handling exceptions globally, from building blocks
